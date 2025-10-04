@@ -70,6 +70,7 @@ const Index = () => {
         onPlanetClick={handlePlanetClick}
         animationPhase={animationPhase}
         isPlaying={isPlaying}
+        speed={speed}
       />
 
       {/* Control Panel */}

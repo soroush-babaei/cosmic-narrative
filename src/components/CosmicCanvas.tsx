@@ -5,9 +5,10 @@ interface CosmicCanvasProps {
   onPlanetClick: (planetId: string) => void;
   animationPhase: number;
   isPlaying: boolean;
+  speed: number;
 }
 
-const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying }: CosmicCanvasProps) => {
+const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: CosmicCanvasProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -94,31 +95,64 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying }: CosmicCanvas
     const glow = new THREE.Mesh(glowGeometry, glowMaterial);
     scene.add(glow);
 
-    // Planet data with visual scaling
+    // Planet data with visual scaling and enhanced materials
     const planetData = [
-      { id: 'mercury', color: 0x8c7853, size: 1.5, distance: 25, speed: 0.04 },
-      { id: 'venus', color: 0xffc649, size: 2.2, distance: 35, speed: 0.03 },
-      { id: 'earth', color: 0x4a90e2, size: 2.3, distance: 45, speed: 0.025 },
-      { id: 'mars', color: 0xe27b58, size: 1.8, distance: 55, speed: 0.02 },
-      { id: 'jupiter', color: 0xc88b3a, size: 5, distance: 75, speed: 0.01 },
-      { id: 'saturn', color: 0xfad5a5, size: 4.5, distance: 95, speed: 0.008 },
-      { id: 'uranus', color: 0x4fd0e7, size: 3, distance: 115, speed: 0.006 },
-      { id: 'neptune', color: 0x4b70dd, size: 3, distance: 135, speed: 0.005 },
+      { id: 'mercury', color: 0x8c7853, size: 1.5, distance: 25, speed: 0.04, emissive: 0x3a2a1a, metalness: 0.7 },
+      { id: 'venus', color: 0xffc649, size: 2.2, distance: 35, speed: 0.03, emissive: 0x6a4a20, metalness: 0.3 },
+      { id: 'earth', color: 0x4a90e2, size: 2.3, distance: 45, speed: 0.025, emissive: 0x1a3a5a, metalness: 0.4 },
+      { id: 'mars', color: 0xe27b58, size: 1.8, distance: 55, speed: 0.02, emissive: 0x5a2a1a, metalness: 0.6 },
+      { id: 'jupiter', color: 0xc88b3a, size: 5, distance: 75, speed: 0.01, emissive: 0x4a3a1a, metalness: 0.2 },
+      { id: 'saturn', color: 0xfad5a5, size: 4.5, distance: 95, speed: 0.008, emissive: 0x6a5a3a, metalness: 0.3, hasRings: true },
+      { id: 'uranus', color: 0x4fd0e7, size: 3, distance: 115, speed: 0.006, emissive: 0x2a5a6a, metalness: 0.5 },
+      { id: 'neptune', color: 0x4b70dd, size: 3, distance: 135, speed: 0.005, emissive: 0x1a3a6a, metalness: 0.5 },
     ];
 
-    // Create planets
+    // Create planets with enhanced visuals
     planetData.forEach((data) => {
-      const planetGeometry = new THREE.SphereGeometry(data.size, 32, 32);
-      const planetMaterial = new THREE.MeshPhongMaterial({
+      const planetGeometry = new THREE.SphereGeometry(data.size, 64, 64);
+      const planetMaterial = new THREE.MeshStandardMaterial({
         color: data.color,
-        emissive: data.color,
-        emissiveIntensity: 0.2,
-        shininess: 30,
+        emissive: data.emissive,
+        emissiveIntensity: 0.4,
+        metalness: data.metalness,
+        roughness: 0.7,
       });
       const planet = new THREE.Mesh(planetGeometry, planetMaterial);
-      planet.userData = { id: data.id, distance: data.distance, speed: data.speed, angle: Math.random() * Math.PI * 2 };
+      planet.userData = { 
+        id: data.id, 
+        distance: data.distance, 
+        speed: data.speed, 
+        angle: Math.random() * Math.PI * 2,
+        isClickable: true 
+      };
       planet.position.x = Math.cos(planet.userData.angle) * data.distance;
       planet.position.z = Math.sin(planet.userData.angle) * data.distance;
+      
+      // Add planet glow
+      const glowGeometry = new THREE.SphereGeometry(data.size * 1.15, 32, 32);
+      const glowMaterial = new THREE.MeshBasicMaterial({
+        color: data.color,
+        transparent: true,
+        opacity: 0.15,
+        side: THREE.BackSide,
+      });
+      const planetGlow = new THREE.Mesh(glowGeometry, glowMaterial);
+      planet.add(planetGlow);
+      
+      // Add Saturn's rings
+      if (data.hasRings) {
+        const ringGeometry = new THREE.RingGeometry(data.size * 1.5, data.size * 2.5, 64);
+        const ringMaterial = new THREE.MeshBasicMaterial({
+          color: 0xfad5a5,
+          transparent: true,
+          opacity: 0.6,
+          side: THREE.DoubleSide,
+        });
+        const rings = new THREE.Mesh(ringGeometry, ringMaterial);
+        rings.rotation.x = Math.PI / 2;
+        planet.add(rings);
+      }
+      
       scene.add(planet);
       planetsRef.current.set(data.id, planet);
 
@@ -190,20 +224,21 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying }: CosmicCanvas
 
       if (isPlaying) {
         planetsRef.current.forEach((planet) => {
-          planet.userData.angle += planet.userData.speed;
+          planet.userData.angle += planet.userData.speed * speed;
           planet.position.x = Math.cos(planet.userData.angle) * planet.userData.distance;
           planet.position.z = Math.sin(planet.userData.angle) * planet.userData.distance;
+          planet.rotation.y += 0.01 * speed;
         });
       }
 
       // Highlight hovered planet
       planetsRef.current.forEach((planet, id) => {
-        const material = planet.material as THREE.MeshPhongMaterial;
+        const material = planet.material as THREE.MeshStandardMaterial;
         if (id === hoveredPlanet) {
-          material.emissiveIntensity = 0.6;
-          planet.scale.set(1.2, 1.2, 1.2);
+          material.emissiveIntensity = 0.8;
+          planet.scale.set(1.15, 1.15, 1.15);
         } else {
-          material.emissiveIntensity = 0.2;
+          material.emissiveIntensity = 0.4;
           planet.scale.set(1, 1, 1);
         }
       });
@@ -228,10 +263,12 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying }: CosmicCanvas
       window.removeEventListener('resize', handleResize);
       renderer.domElement.removeEventListener('mousemove', onMouseMove);
       renderer.domElement.removeEventListener('click', onClick);
-      containerRef.current?.removeChild(renderer.domElement);
+      if (containerRef.current && renderer.domElement.parentElement) {
+        containerRef.current.removeChild(renderer.domElement);
+      }
       renderer.dispose();
     };
-  }, [onPlanetClick, isPlaying, hoveredPlanet]);
+  }, [onPlanetClick, isPlaying, hoveredPlanet, speed]);
 
   return (
     <div ref={containerRef} className="w-full h-full">
