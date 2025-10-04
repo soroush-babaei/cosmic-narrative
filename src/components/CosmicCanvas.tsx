@@ -14,7 +14,18 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const planetsRef = useRef<Map<string, THREE.Mesh>>(new Map());
+  const isPlayingRef = useRef(isPlaying);
+  const speedRef = useRef(speed);
   const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
+
+  // Keep refs in sync with props
+  useEffect(() => {
+    isPlayingRef.current = isPlaying;
+  }, [isPlaying]);
+
+  useEffect(() => {
+    speedRef.current = speed;
+  }, [speed]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -222,12 +233,12 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
     const animate = () => {
       requestAnimationFrame(animate);
 
-      if (isPlaying) {
+      if (isPlayingRef.current) {
         planetsRef.current.forEach((planet) => {
-          planet.userData.angle += planet.userData.speed * speed;
+          planet.userData.angle += planet.userData.speed * speedRef.current;
           planet.position.x = Math.cos(planet.userData.angle) * planet.userData.distance;
           planet.position.z = Math.sin(planet.userData.angle) * planet.userData.distance;
-          planet.rotation.y += 0.01 * speed;
+          planet.rotation.y += 0.01 * speedRef.current;
         });
       }
 
@@ -268,7 +279,7 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
       }
       renderer.dispose();
     };
-  }, [onPlanetClick, isPlaying, hoveredPlanet, speed]);
+  }, [onPlanetClick, hoveredPlanet]);
 
   return (
     <div ref={containerRef} className="w-full h-full">
