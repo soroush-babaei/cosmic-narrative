@@ -1,5 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import mercuryTexture from '@/assets/mercury-texture.jpg';
+import venusTexture from '@/assets/venus-texture.jpg';
+import earthTexture from '@/assets/earth-texture.jpg';
+import marsTexture from '@/assets/mars-texture.jpg';
+import jupiterTexture from '@/assets/jupiter-texture.jpg';
+import saturnTexture from '@/assets/saturn-texture.jpg';
+import uranusTexture from '@/assets/uranus-texture.jpg';
+import neptuneTexture from '@/assets/neptune-texture.jpg';
 
 interface CosmicCanvasProps {
   onPlanetClick: (planetId: string) => void;
@@ -106,45 +114,65 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
     const glow = new THREE.Mesh(glowGeometry, glowMaterial);
     scene.add(glow);
 
-    // Planet data with visual scaling and enhanced materials
+    // Texture loader
+    const textureLoader = new THREE.TextureLoader();
+
+    // Planet data with visual scaling and textures
     const planetData = [
-      { id: 'mercury', color: 0x8c7853, size: 1.5, distance: 25, speed: 0.04, emissive: 0x3a2a1a, metalness: 0.7 },
-      { id: 'venus', color: 0xffc649, size: 2.2, distance: 35, speed: 0.03, emissive: 0x6a4a20, metalness: 0.3 },
-      { id: 'earth', color: 0x4a90e2, size: 2.3, distance: 45, speed: 0.025, emissive: 0x1a3a5a, metalness: 0.4 },
-      { id: 'mars', color: 0xe27b58, size: 1.8, distance: 55, speed: 0.02, emissive: 0x5a2a1a, metalness: 0.6 },
-      { id: 'jupiter', color: 0xc88b3a, size: 5, distance: 75, speed: 0.01, emissive: 0x4a3a1a, metalness: 0.2 },
-      { id: 'saturn', color: 0xfad5a5, size: 4.5, distance: 95, speed: 0.008, emissive: 0x6a5a3a, metalness: 0.3, hasRings: true },
-      { id: 'uranus', color: 0x4fd0e7, size: 3, distance: 115, speed: 0.006, emissive: 0x2a5a6a, metalness: 0.5 },
-      { id: 'neptune', color: 0x4b70dd, size: 3, distance: 135, speed: 0.005, emissive: 0x1a3a6a, metalness: 0.5 },
+      { id: 'mercury', texture: mercuryTexture, size: 1.5, distance: 25, speed: 0.04, emissive: 0x3a2a1a },
+      { id: 'venus', texture: venusTexture, size: 2.2, distance: 35, speed: 0.03, emissive: 0x6a4a20 },
+      { id: 'earth', texture: earthTexture, size: 2.3, distance: 45, speed: 0.025, emissive: 0x1a3a5a },
+      { id: 'mars', texture: marsTexture, size: 1.8, distance: 55, speed: 0.02, emissive: 0x5a2a1a },
+      { id: 'jupiter', texture: jupiterTexture, size: 5, distance: 75, speed: 0.01, emissive: 0x4a3a1a },
+      { id: 'saturn', texture: saturnTexture, size: 4.5, distance: 95, speed: 0.008, emissive: 0x6a5a3a, hasRings: true },
+      { id: 'uranus', texture: uranusTexture, size: 3, distance: 115, speed: 0.006, emissive: 0x2a5a6a },
+      { id: 'neptune', texture: neptuneTexture, size: 3, distance: 135, speed: 0.005, emissive: 0x1a3a6a },
     ];
 
-    // Create planets with enhanced visuals
+    // Create planets with realistic textures
     planetData.forEach((data) => {
       const planetGeometry = new THREE.SphereGeometry(data.size, 64, 64);
+      
+      // Load texture and create material
+      const texture = textureLoader.load(data.texture);
       const planetMaterial = new THREE.MeshStandardMaterial({
-        color: data.color,
+        map: texture,
         emissive: data.emissive,
-        emissiveIntensity: 0.4,
-        metalness: data.metalness,
-        roughness: 0.7,
+        emissiveIntensity: 0.15,
+        roughness: 0.8,
+        metalness: 0.1,
       });
+      
       const planet = new THREE.Mesh(planetGeometry, planetMaterial);
       planet.userData = { 
         id: data.id, 
         distance: data.distance, 
         speed: data.speed, 
         angle: Math.random() * Math.PI * 2,
+        size: data.size,
         isClickable: true 
       };
       planet.position.x = Math.cos(planet.userData.angle) * data.distance;
       planet.position.z = Math.sin(planet.userData.angle) * data.distance;
       
-      // Add planet glow
-      const glowGeometry = new THREE.SphereGeometry(data.size * 1.15, 32, 32);
+      // Create invisible larger hitbox for easier clicking
+      const hitboxGeometry = new THREE.SphereGeometry(data.size * 2, 16, 16);
+      const hitboxMaterial = new THREE.MeshBasicMaterial({
+        visible: false,
+      });
+      const hitbox = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
+      hitbox.userData = { 
+        id: data.id,
+        isPlanetHitbox: true 
+      };
+      planet.add(hitbox);
+      
+      // Add subtle atmosphere glow
+      const glowGeometry = new THREE.SphereGeometry(data.size * 1.1, 32, 32);
       const glowMaterial = new THREE.MeshBasicMaterial({
-        color: data.color,
+        color: 0xffffff,
         transparent: true,
-        opacity: 0.15,
+        opacity: 0.1,
         side: THREE.BackSide,
       });
       const planetGlow = new THREE.Mesh(glowGeometry, glowMaterial);
@@ -153,14 +181,17 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
       // Add Saturn's rings
       if (data.hasRings) {
         const ringGeometry = new THREE.RingGeometry(data.size * 1.5, data.size * 2.5, 64);
-        const ringMaterial = new THREE.MeshBasicMaterial({
+        const ringMaterial = new THREE.MeshStandardMaterial({
           color: 0xfad5a5,
           transparent: true,
-          opacity: 0.6,
+          opacity: 0.7,
           side: THREE.DoubleSide,
+          roughness: 0.8,
         });
         const rings = new THREE.Mesh(ringGeometry, ringMaterial);
-        rings.rotation.x = Math.PI / 2;
+        rings.rotation.x = Math.PI / 2.2;
+        rings.castShadow = true;
+        rings.receiveShadow = true;
         planet.add(rings);
       }
       
@@ -199,12 +230,25 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
 
       raycaster.setFromCamera(mouse, camera);
       const planets = Array.from(planetsRef.current.values());
-      const intersects = raycaster.intersectObjects(planets);
+      const allObjects: THREE.Object3D[] = [];
+      planets.forEach(planet => {
+        allObjects.push(planet);
+        planet.children.forEach(child => {
+          if ((child as any).userData?.isPlanetHitbox) {
+            allObjects.push(child);
+          }
+        });
+      });
+      
+      const intersects = raycaster.intersectObjects(allObjects);
 
       if (intersects.length > 0) {
-        const planet = intersects[0].object as THREE.Mesh;
-        setHoveredPlanet(planet.userData.id);
-        renderer.domElement.style.cursor = 'pointer';
+        const object = intersects[0].object as THREE.Mesh;
+        const planetId = object.userData.id || object.parent?.userData.id;
+        if (planetId) {
+          setHoveredPlanet(planetId);
+          renderer.domElement.style.cursor = 'pointer';
+        }
       } else {
         setHoveredPlanet(null);
         renderer.domElement.style.cursor = 'default';
@@ -218,11 +262,24 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
 
       raycaster.setFromCamera(mouse, camera);
       const planets = Array.from(planetsRef.current.values());
-      const intersects = raycaster.intersectObjects(planets);
+      const allObjects: THREE.Object3D[] = [];
+      planets.forEach(planet => {
+        allObjects.push(planet);
+        planet.children.forEach(child => {
+          if ((child as any).userData?.isPlanetHitbox) {
+            allObjects.push(child);
+          }
+        });
+      });
+      
+      const intersects = raycaster.intersectObjects(allObjects);
 
       if (intersects.length > 0) {
-        const planet = intersects[0].object as THREE.Mesh;
-        onPlanetClick(planet.userData.id);
+        const object = intersects[0].object as THREE.Mesh;
+        const planetId = object.userData.id || object.parent?.userData.id;
+        if (planetId) {
+          onPlanetClick(planetId);
+        }
       }
     };
 
@@ -246,10 +303,10 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
       planetsRef.current.forEach((planet, id) => {
         const material = planet.material as THREE.MeshStandardMaterial;
         if (id === hoveredPlanet) {
-          material.emissiveIntensity = 0.8;
-          planet.scale.set(1.15, 1.15, 1.15);
+          material.emissiveIntensity = 0.5;
+          planet.scale.set(1.1, 1.1, 1.1);
         } else {
-          material.emissiveIntensity = 0.4;
+          material.emissiveIntensity = 0.15;
           planet.scale.set(1, 1, 1);
         }
       });
