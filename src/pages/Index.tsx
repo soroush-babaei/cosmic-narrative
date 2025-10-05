@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CosmicCanvas from '@/components/CosmicCanvas';
 import PlanetInfoPanel from '@/components/PlanetInfoPanel';
 import ControlPanel from '@/components/ControlPanel';
+import BigBangAnimation from '@/components/BigBangAnimation';
 import { Sparkles } from 'lucide-react';
 
 const Index = () => {
@@ -9,6 +10,18 @@ const Index = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [animationPhase, setAnimationPhase] = useState(0);
   const [speed, setSpeed] = useState(1);
+  const [showBigBang, setShowBigBang] = useState(false);
+  const [hasSeenBigBang, setHasSeenBigBang] = useState(false);
+
+  // Show Big Bang animation on first load
+  useEffect(() => {
+    const seen = localStorage.getItem('hasSeenBigBang');
+    if (!seen) {
+      setShowBigBang(true);
+    } else {
+      setHasSeenBigBang(true);
+    }
+  }, []);
 
   const handlePlanetClick = (planetId: string) => {
     setSelectedPlanet(planetId);
@@ -28,8 +41,33 @@ const Index = () => {
     setSelectedPlanet(null);
   };
 
+  const handleBigBangComplete = () => {
+    setShowBigBang(false);
+    setHasSeenBigBang(true);
+    localStorage.setItem('hasSeenBigBang', 'true');
+  };
+
+  const handleBigBangSkip = () => {
+    setShowBigBang(false);
+    setHasSeenBigBang(true);
+    localStorage.setItem('hasSeenBigBang', 'true');
+  };
+
+  const handleReplayBigBang = () => {
+    setShowBigBang(true);
+  };
+
   return (
     <div className="relative w-full h-screen overflow-hidden bg-background">
+      {/* Big Bang Animation */}
+      {showBigBang && (
+        <div className="absolute inset-0 z-50">
+          <BigBangAnimation 
+            onComplete={handleBigBangComplete}
+            onSkip={handleBigBangSkip}
+          />
+        </div>
+      )}
       {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-30 p-6">
         <div className="glass-panel px-6 py-4 rounded-2xl inline-flex items-center gap-3 glow-secondary">
@@ -80,6 +118,8 @@ const Index = () => {
         onReset={handleReset}
         speed={speed}
         onSpeedChange={setSpeed}
+        onReplayBigBang={handleReplayBigBang}
+        showReplayButton={hasSeenBigBang}
       />
 
       {/* Planet Info Panel */}

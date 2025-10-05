@@ -1,4 +1,4 @@
-import { Play, Pause, RotateCcw, Zap } from 'lucide-react';
+import { Play, Pause, RotateCcw, Zap, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 
@@ -8,6 +8,8 @@ interface ControlPanelProps {
   onReset: () => void;
   speed: number;
   onSpeedChange: (speed: number) => void;
+  onReplayBigBang?: () => void;
+  showReplayButton?: boolean;
 }
 
 const ControlPanel = ({
@@ -16,6 +18,8 @@ const ControlPanel = ({
   onReset,
   speed,
   onSpeedChange,
+  onReplayBigBang,
+  showReplayButton = false,
 }: ControlPanelProps) => {
   return (
     <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40">
@@ -41,6 +45,18 @@ const ControlPanel = ({
         >
           <RotateCcw className="w-5 h-5" />
         </Button>
+
+        {showReplayButton && onReplayBigBang && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onReplayBigBang}
+            className="hover:bg-primary/20 hover:text-primary transition-smooth"
+            title="بازپخش مهبانگ"
+          >
+            <Sparkles className="w-5 h-5" />
+          </Button>
+        )}
 
         <div className="w-px h-8 bg-border/50" />
 
