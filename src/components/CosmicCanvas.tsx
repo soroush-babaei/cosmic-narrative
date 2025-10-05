@@ -35,6 +35,20 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
     speedRef.current = speed;
   }, [speed]);
 
+  // Handle hover effect separately to avoid scene recreation
+  useEffect(() => {
+    planetsRef.current.forEach((planet, id) => {
+      const material = planet.material as THREE.MeshStandardMaterial;
+      if (id === hoveredPlanet) {
+        material.emissiveIntensity = 0.5;
+        planet.scale.set(1.1, 1.1, 1.1);
+      } else {
+        material.emissiveIntensity = 0.15;
+        planet.scale.set(1, 1, 1);
+      }
+    });
+  }, [hoveredPlanet]);
+
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -305,17 +319,6 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
         });
       }
 
-      // Highlight hovered planet
-      planetsRef.current.forEach((planet, id) => {
-        const material = planet.material as THREE.MeshStandardMaterial;
-        if (id === hoveredPlanet) {
-          material.emissiveIntensity = 0.5;
-          planet.scale.set(1.1, 1.1, 1.1);
-        } else {
-          material.emissiveIntensity = 0.15;
-          planet.scale.set(1, 1, 1);
-        }
-      });
 
       renderer.render(scene, camera);
     };
@@ -342,7 +345,7 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
       }
       renderer.dispose();
     };
-  }, [onPlanetClick, hoveredPlanet]);
+  }, [onPlanetClick]);
 
   return (
     <div ref={containerRef} className="w-full h-full">
