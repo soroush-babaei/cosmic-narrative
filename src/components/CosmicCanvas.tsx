@@ -156,14 +156,15 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
       planet.position.z = Math.sin(planet.userData.angle) * data.distance;
       
       // Create invisible larger hitbox for easier clicking
-      const hitboxGeometry = new THREE.SphereGeometry(data.size * 2, 16, 16);
+      const hitboxGeometry = new THREE.SphereGeometry(data.size * 3, 16, 16);
       const hitboxMaterial = new THREE.MeshBasicMaterial({
         visible: false,
       });
       const hitbox = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
       hitbox.userData = { 
         id: data.id,
-        isPlanetHitbox: true 
+        isPlanetHitbox: true,
+        isClickable: true
       };
       planet.add(hitbox);
       
@@ -221,6 +222,7 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
 
     // Mouse interaction
     const raycaster = new THREE.Raycaster();
+    raycaster.params.Points!.threshold = 0.1;
     const mouse = new THREE.Vector2();
 
     const onMouseMove = (event: MouseEvent) => {
@@ -231,16 +233,18 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
       raycaster.setFromCamera(mouse, camera);
       const planets = Array.from(planetsRef.current.values());
       const allObjects: THREE.Object3D[] = [];
+      
+      // Prioritize hitboxes for better click detection
       planets.forEach(planet => {
-        allObjects.push(planet);
         planet.children.forEach(child => {
           if ((child as any).userData?.isPlanetHitbox) {
             allObjects.push(child);
           }
         });
+        allObjects.push(planet);
       });
       
-      const intersects = raycaster.intersectObjects(allObjects);
+      const intersects = raycaster.intersectObjects(allObjects, false);
 
       if (intersects.length > 0) {
         const object = intersects[0].object as THREE.Mesh;
@@ -263,16 +267,18 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
       raycaster.setFromCamera(mouse, camera);
       const planets = Array.from(planetsRef.current.values());
       const allObjects: THREE.Object3D[] = [];
+      
+      // Prioritize hitboxes for better click detection
       planets.forEach(planet => {
-        allObjects.push(planet);
         planet.children.forEach(child => {
           if ((child as any).userData?.isPlanetHitbox) {
             allObjects.push(child);
           }
         });
+        allObjects.push(planet);
       });
       
-      const intersects = raycaster.intersectObjects(allObjects);
+      const intersects = raycaster.intersectObjects(allObjects, false);
 
       if (intersects.length > 0) {
         const object = intersects[0].object as THREE.Mesh;
