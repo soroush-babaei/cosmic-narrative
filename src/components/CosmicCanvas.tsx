@@ -110,10 +110,12 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
 
     // Sun
     const sunGeometry = new THREE.SphereGeometry(10, 32, 32);
-    const sunMaterial = new THREE.MeshBasicMaterial({
+    const sunMaterial = new THREE.MeshStandardMaterial({
       color: 0xffd27f,
       emissive: 0xffd27f,
       emissiveIntensity: 1,
+      roughness: 0.9,
+      metalness: 0.1,
     });
     const sun = new THREE.Mesh(sunGeometry, sunMaterial);
     scene.add(sun);
