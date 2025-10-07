@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import mercuryTexture from '@/assets/mercury-texture.jpg';
 import venusTexture from '@/assets/venus-texture.jpg';
 import earthTexture from '@/assets/earth-texture.jpg';
@@ -21,6 +22,7 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const controlsRef = useRef<OrbitControls | null>(null);
   const planetsRef = useRef<Map<string, THREE.Mesh>>(new Map());
   const isPlayingRef = useRef(isPlaying);
   const speedRef = useRef(speed);
@@ -74,6 +76,20 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
     renderer.setPixelRatio(window.devicePixelRatio);
     containerRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
+
+    // OrbitControls for camera movement
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.minDistance = 30;
+    controls.maxDistance = 300;
+    controls.enablePan = true;
+    controls.mouseButtons = {
+      LEFT: THREE.MOUSE.ROTATE,
+      MIDDLE: THREE.MOUSE.DOLLY,
+      RIGHT: THREE.MOUSE.PAN
+    };
+    controlsRef.current = controls;
 
     // Lighting
     const ambientLight = new THREE.AmbientLight(0x404040, 2);
@@ -334,6 +350,8 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
         });
       }
 
+      // Update controls
+      controls.update();
 
       renderer.render(scene, camera);
     };
@@ -355,6 +373,7 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
       window.removeEventListener('resize', handleResize);
       renderer.domElement.removeEventListener('mousemove', onMouseMove);
       renderer.domElement.removeEventListener('click', onClick);
+      controls.dispose();
       if (containerRef.current && renderer.domElement.parentElement) {
         containerRef.current.removeChild(renderer.domElement);
       }
