@@ -215,11 +215,11 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
       scene.add(planet);
       planetsRef.current.set(data.id, planet);
 
-      // Add orbit line
+      // Add orbit line with improved visibility
       const orbitGeometry = new THREE.BufferGeometry();
       const orbitPoints = [];
-      for (let i = 0; i <= 64; i++) {
-        const angle = (i / 64) * Math.PI * 2;
+      for (let i = 0; i <= 128; i++) {
+        const angle = (i / 128) * Math.PI * 2;
         orbitPoints.push(
           Math.cos(angle) * data.distance,
           0,
@@ -227,13 +227,26 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
         );
       }
       orbitGeometry.setAttribute('position', new THREE.Float32BufferAttribute(orbitPoints, 3));
+      
+      // Create glowing orbit line
       const orbitMaterial = new THREE.LineBasicMaterial({
-        color: 0x444444,
+        color: 0x6688ff,
         transparent: true,
-        opacity: 0.3,
+        opacity: 0.5,
+        linewidth: 2,
       });
       const orbit = new THREE.Line(orbitGeometry, orbitMaterial);
       scene.add(orbit);
+      
+      // Add subtle glow effect to orbit
+      const glowOrbitMaterial = new THREE.LineBasicMaterial({
+        color: 0x88aaff,
+        transparent: true,
+        opacity: 0.2,
+        linewidth: 4,
+      });
+      const glowOrbit = new THREE.Line(orbitGeometry, glowOrbitMaterial);
+      scene.add(glowOrbit);
     });
 
     // Mouse interaction
