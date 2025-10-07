@@ -230,9 +230,9 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
       
       // Create glowing orbit line
       const orbitMaterial = new THREE.LineBasicMaterial({
-        color: 0x6688ff,
+        color: 0xffffff,
         transparent: true,
-        opacity: 0.5,
+        opacity: 0.4,
         linewidth: 2,
       });
       const orbit = new THREE.Line(orbitGeometry, orbitMaterial);
@@ -240,9 +240,9 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
       
       // Add subtle glow effect to orbit
       const glowOrbitMaterial = new THREE.LineBasicMaterial({
-        color: 0x88aaff,
+        color: 0xffffff,
         transparent: true,
-        opacity: 0.2,
+        opacity: 0.15,
         linewidth: 4,
       });
       const glowOrbit = new THREE.Line(orbitGeometry, glowOrbitMaterial);
