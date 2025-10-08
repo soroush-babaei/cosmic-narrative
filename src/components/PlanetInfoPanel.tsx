@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { X } from 'lucide-react';
+import { X, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import GeologicalErasPanel from './GeologicalErasPanel';
 
 interface PlanetData {
   id: string;
@@ -26,6 +27,7 @@ interface PlanetInfoPanelProps {
 
 const PlanetInfoPanel = ({ planetId, onClose }: PlanetInfoPanelProps) => {
   const [planetData, setPlanetData] = useState<PlanetData | null>(null);
+  const [showGeologicalEras, setShowGeologicalEras] = useState(false);
 
   useEffect(() => {
     if (!planetId) return;
@@ -128,12 +130,29 @@ const PlanetInfoPanel = ({ planetId, onClose }: PlanetInfoPanelProps) => {
           </div>
         </div>
 
+        {planetId === 'earth' && (
+          <div className="mt-6">
+            <Button
+              onClick={() => setShowGeologicalEras(true)}
+              className="w-full gap-2"
+              size="lg"
+            >
+              <Clock className="w-5 h-5" />
+              مشاهده دوره‌های زمین‌شناسی
+            </Button>
+          </div>
+        )}
+
         <div className="mt-6 pt-4 border-t border-border/50">
           <p className="text-xs text-muted-foreground">
             منابع داده: NASA Planetary Fact Sheet, ESA Space Science
           </p>
         </div>
       </div>
+
+      {showGeologicalEras && (
+        <GeologicalErasPanel onClose={() => setShowGeologicalEras(false)} />
+      )}
     </div>
   );
 };
