@@ -1,5 +1,9 @@
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import precambrianImg from '@/assets/era-precambrian.jpg';
+import paleozoicImg from '@/assets/era-paleozoic.jpg';
+import mesozoicImg from '@/assets/era-mesozoic.jpg';
+import cenozoicImg from '@/assets/era-cenozoic.jpg';
 
 interface Era {
   name: string;
@@ -8,6 +12,7 @@ interface Era {
   duration: string;
   characteristics: string;
   color: string;
+  image: string;
 }
 
 interface GeologicalErasPanelProps {
@@ -21,7 +26,8 @@ const eras: Era[] = [
     period: '4.6 میلیارد - 541 میلیون سال پیش',
     duration: '~4 میلیارد سال',
     characteristics: 'تشکیل زمین، ظهور اولین موجودات تک‌سلولی، تشکیل اقیانوس‌ها و جو اولیه',
-    color: '#F48C06'
+    color: '#F48C06',
+    image: precambrianImg
   },
   {
     name: 'پالئوزوئیک',
@@ -29,7 +35,8 @@ const eras: Era[] = [
     period: '541 - 252 میلیون سال پیش',
     duration: '~289 میلیون سال',
     characteristics: 'انفجار کامبرین، ظهور ماهی‌ها، گیاهان و حشرات، تشکیل جنگل‌های اولیه، ظهور خزندگان',
-    color: '#0077B6'
+    color: '#0077B6',
+    image: paleozoicImg
   },
   {
     name: 'مزوزوئیک',
@@ -37,7 +44,8 @@ const eras: Era[] = [
     period: '252 - 66 میلیون سال پیش',
     duration: '~186 میلیون سال',
     characteristics: 'عصر دایناسورها، ظهور پرندگان و پستانداران، تشکیل گیاهان گلدار، انقراض دسته‌جمعی',
-    color: '#06A77D'
+    color: '#06A77D',
+    image: mesozoicImg
   },
   {
     name: 'سنوزوئیک',
@@ -45,7 +53,8 @@ const eras: Era[] = [
     period: '66 میلیون سال پیش - اکنون',
     duration: '~66 میلیون سال',
     characteristics: 'عصر پستانداران، ظهور انسان، تشکیل کوه‌های مدرن، عصر یخبندان‌ها',
-    color: '#7209B7'
+    color: '#7209B7',
+    image: cenozoicImg
   }
 ];
 
@@ -68,32 +77,43 @@ const GeologicalErasPanel = ({ onClose }: GeologicalErasPanelProps) => {
           </Button>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           {eras.map((era, index) => (
             <div
               key={era.nameEn}
-              className="glass-panel p-5 rounded-xl border-l-4 hover:bg-muted/10 transition-all duration-300"
-              style={{ borderLeftColor: era.color }}
+              className="glass-panel rounded-xl border-l-4 hover:bg-muted/10 transition-all duration-300 overflow-hidden animate-fade-in"
+              style={{ 
+                borderLeftColor: era.color,
+                animationDelay: `${index * 150}ms`
+              }}
             >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg"
-                    style={{ backgroundColor: era.color }}
-                  >
-                    {index + 1}
+              <div className="relative h-48 overflow-hidden">
+                <img 
+                  src={era.image} 
+                  alt={era.name}
+                  className="w-full h-full object-cover hover-scale"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg"
+                      style={{ backgroundColor: era.color }}
+                    >
+                      {index + 1}
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-white drop-shadow-lg">{era.name}</h3>
+                      <p className="text-sm text-white/90 drop-shadow-md">{era.nameEn}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-foreground">{era.name}</h3>
-                    <p className="text-sm text-muted-foreground">{era.nameEn}</p>
+                  <div className="text-right">
+                    <p className="text-sm font-semibold text-white drop-shadow-lg">{era.duration}</p>
                   </div>
-                </div>
-                <div className="text-left">
-                  <p className="text-sm font-semibold text-primary">{era.duration}</p>
                 </div>
               </div>
 
-              <div className="space-y-2 mr-15">
+              <div className="p-5 space-y-2">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-semibold text-muted-foreground">دوره:</span>
                   <span className="text-sm text-foreground">{era.period}</span>
