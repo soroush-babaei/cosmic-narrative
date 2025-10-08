@@ -4,7 +4,6 @@ import PlanetInfoPanel from '@/components/PlanetInfoPanel';
 import ControlPanel from '@/components/ControlPanel';
 import BigBangAnimation from '@/components/BigBangAnimation';
 import { Sparkles } from 'lucide-react';
-
 const Index = () => {
   const [selectedPlanet, setSelectedPlanet] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -22,104 +21,53 @@ const Index = () => {
       setHasSeenBigBang(true);
     }
   }, []);
-
   const handlePlanetClick = (planetId: string) => {
     setSelectedPlanet(planetId);
   };
-
   const handleClosePanel = () => {
     setSelectedPlanet(null);
   };
-
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
-
   const handleReset = () => {
     setAnimationPhase(0);
     setIsPlaying(false);
     setSelectedPlanet(null);
   };
-
   const handleBigBangComplete = () => {
     setShowBigBang(false);
     setHasSeenBigBang(true);
     localStorage.setItem('hasSeenBigBang', 'true');
   };
-
   const handleBigBangSkip = () => {
     setShowBigBang(false);
     setHasSeenBigBang(true);
     localStorage.setItem('hasSeenBigBang', 'true');
   };
-
   const handleReplayBigBang = () => {
     setShowBigBang(true);
   };
-
-  return (
-    <div className="relative w-full h-screen overflow-hidden bg-background">
+  return <div className="relative w-full h-screen overflow-hidden bg-background">
       {/* Big Bang Animation */}
-      {showBigBang && (
-        <div className="absolute inset-0 z-50">
-          <BigBangAnimation 
-            onComplete={handleBigBangComplete}
-            onSkip={handleBigBangSkip}
-          />
-        </div>
-      )}
+      {showBigBang && <div className="absolute inset-0 z-50">
+          <BigBangAnimation onComplete={handleBigBangComplete} onSkip={handleBigBangSkip} />
+        </div>}
       {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-30 p-6">
-        <div className="glass-panel px-6 py-4 rounded-2xl inline-flex items-center gap-3 glow-secondary">
-          <Sparkles className="w-6 h-6 text-primary animate-pulse" />
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">شبیه‌ساز تکامل کیهانی</h1>
-            <p className="text-sm text-muted-foreground">
-              از مه‌بانگ تا منظومه شمسی
-            </p>
-          </div>
-        </div>
+        
       </header>
 
       {/* Info Card */}
       <div className="absolute top-6 right-6 z-30 max-w-sm">
-        <div className="glass-panel p-6 rounded-2xl space-y-3">
-          <h2 className="text-lg font-semibold text-primary">کاوش در کیهان</h2>
-          <p className="text-sm text-foreground/80 leading-relaxed">
-            برای مشاهده اطلاعات علمی دقیق روی هر سیاره کلیک کنید. از کنترل‌های زیر برای توقف، ادامه یا تنظیم سرعت مداری استفاده کنید.
-          </p>
-          <div className="flex flex-wrap gap-2 pt-2">
-            <span className="text-xs px-3 py-1 bg-primary/20 text-primary rounded-full">
-              سه‌بعدی تعاملی
-            </span>
-            <span className="text-xs px-3 py-1 bg-secondary/20 text-secondary rounded-full">
-              داده‌های واقعی
-            </span>
-            <span className="text-xs px-3 py-1 bg-accent/20 text-accent rounded-full">
-              آموزشی
-            </span>
-          </div>
-        </div>
+        
       </div>
 
       {/* 3D Canvas */}
-      <CosmicCanvas
-        onPlanetClick={handlePlanetClick}
-        animationPhase={animationPhase}
-        isPlaying={isPlaying}
-        speed={speed}
-      />
+      <CosmicCanvas onPlanetClick={handlePlanetClick} animationPhase={animationPhase} isPlaying={isPlaying} speed={speed} />
 
       {/* Control Panel */}
-      <ControlPanel
-        isPlaying={isPlaying}
-        onPlayPause={handlePlayPause}
-        onReset={handleReset}
-        speed={speed}
-        onSpeedChange={setSpeed}
-        onReplayBigBang={handleReplayBigBang}
-        showReplayButton={hasSeenBigBang}
-      />
+      <ControlPanel isPlaying={isPlaying} onPlayPause={handlePlayPause} onReset={handleReset} speed={speed} onSpeedChange={setSpeed} onReplayBigBang={handleReplayBigBang} showReplayButton={hasSeenBigBang} />
 
       {/* Planet Info Panel */}
       <PlanetInfoPanel planetId={selectedPlanet} onClose={handleClosePanel} />
@@ -132,8 +80,6 @@ const Index = () => {
           </p>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
