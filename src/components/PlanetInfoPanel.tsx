@@ -59,7 +59,7 @@ const PlanetInfoPanel = ({ planetId, onClose }: PlanetInfoPanelProps) => {
             />
             <div>
               <h2 className="text-3xl font-bold text-primary">{planetData.name}</h2>
-              <p className="text-sm text-muted-foreground">Planet</p>
+              <p className="text-sm text-muted-foreground">سیاره</p>
             </div>
           </div>
           <Button
@@ -77,34 +77,34 @@ const PlanetInfoPanel = ({ planetId, onClose }: PlanetInfoPanelProps) => {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="glass-panel p-4 rounded-lg">
-              <p className="text-sm text-muted-foreground mb-1">Mass</p>
+              <p className="text-sm text-muted-foreground mb-1">جرم</p>
               <p className="text-lg font-semibold">{formatNumber(planetData.mass_kg)} kg</p>
             </div>
             <div className="glass-panel p-4 rounded-lg">
-              <p className="text-sm text-muted-foreground mb-1">Radius</p>
+              <p className="text-sm text-muted-foreground mb-1">شعاع</p>
               <p className="text-lg font-semibold">{planetData.radius_km.toLocaleString()} km</p>
             </div>
             <div className="glass-panel p-4 rounded-lg">
-              <p className="text-sm text-muted-foreground mb-1">Distance from Sun</p>
-              <p className="text-lg font-semibold">{formatDistance(planetData.distance_km)} million km</p>
+              <p className="text-sm text-muted-foreground mb-1">فاصله از خورشید</p>
+              <p className="text-lg font-semibold">{formatDistance(planetData.distance_km)} میلیون کیلومتر</p>
               <p className="text-xs text-muted-foreground">{planetData.distance_au} AU</p>
             </div>
             <div className="glass-panel p-4 rounded-lg">
-              <p className="text-sm text-muted-foreground mb-1">Mean Temperature</p>
+              <p className="text-sm text-muted-foreground mb-1">دمای میانگین</p>
               <p className="text-lg font-semibold">{planetData.mean_temp_c}°C</p>
             </div>
             <div className="glass-panel p-4 rounded-lg">
-              <p className="text-sm text-muted-foreground mb-1">Orbital Period</p>
-              <p className="text-lg font-semibold">{planetData.orbital_period_days.toLocaleString()} days</p>
+              <p className="text-sm text-muted-foreground mb-1">دوره مداری</p>
+              <p className="text-lg font-semibold">{planetData.orbital_period_days.toLocaleString()} روز</p>
             </div>
             <div className="glass-panel p-4 rounded-lg">
-              <p className="text-sm text-muted-foreground mb-1">Rotation Period</p>
-              <p className="text-lg font-semibold">{Math.abs(planetData.rotation_period_hours).toFixed(1)} hours</p>
+              <p className="text-sm text-muted-foreground mb-1">دوره چرخش</p>
+              <p className="text-lg font-semibold">{Math.abs(planetData.rotation_period_hours).toFixed(1)} ساعت</p>
             </div>
           </div>
 
           <div className="glass-panel p-4 rounded-lg">
-            <p className="text-sm text-muted-foreground mb-2">Composition</p>
+            <p className="text-sm text-muted-foreground mb-2">ترکیب</p>
             <div className="flex flex-wrap gap-2">
               {Object.entries(planetData.composition).map(([element, percentage]) => (
                 <span
@@ -118,19 +118,19 @@ const PlanetInfoPanel = ({ planetId, onClose }: PlanetInfoPanelProps) => {
           </div>
 
           <div className="glass-panel p-4 rounded-lg">
-            <p className="text-sm text-muted-foreground mb-1">Atmosphere</p>
+            <p className="text-sm text-muted-foreground mb-1">جو</p>
             <p className="text-lg">{planetData.atmosphere}</p>
           </div>
 
           <div className="glass-panel p-4 rounded-lg">
-            <p className="text-sm text-muted-foreground mb-1">Moons</p>
+            <p className="text-sm text-muted-foreground mb-1">قمرها</p>
             <p className="text-lg font-semibold">{planetData.moons}</p>
           </div>
         </div>
 
         <div className="mt-6 pt-4 border-t border-border/50">
           <p className="text-xs text-muted-foreground">
-            Data sources: NASA Planetary Fact Sheet, ESA Space Science
+            منابع داده: NASA Planetary Fact Sheet, ESA Space Science
           </p>
         </div>
       </div>

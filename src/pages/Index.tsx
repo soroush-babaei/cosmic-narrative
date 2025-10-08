@@ -73,9 +73,9 @@ const Index = () => {
         <div className="glass-panel px-6 py-4 rounded-2xl inline-flex items-center gap-3 glow-secondary">
           <Sparkles className="w-6 h-6 text-primary animate-pulse" />
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Cosmic Evolution Simulator</h1>
+            <h1 className="text-2xl font-bold text-foreground">شبیه‌ساز تکامل کیهانی</h1>
             <p className="text-sm text-muted-foreground">
-              From the Big Bang to the Solar System
+              از مه‌بانگ تا منظومه شمسی
             </p>
           </div>
         </div>
@@ -84,20 +84,19 @@ const Index = () => {
       {/* Info Card */}
       <div className="absolute top-6 right-6 z-30 max-w-sm">
         <div className="glass-panel p-6 rounded-2xl space-y-3">
-          <h2 className="text-lg font-semibold text-primary">Explore the Cosmos</h2>
+          <h2 className="text-lg font-semibold text-primary">کاوش در کیهان</h2>
           <p className="text-sm text-foreground/80 leading-relaxed">
-            Click on any planet to view detailed scientific information. Use the controls below
-            to pause, resume, or adjust the orbital speed.
+            برای مشاهده اطلاعات علمی دقیق روی هر سیاره کلیک کنید. از کنترل‌های زیر برای توقف، ادامه یا تنظیم سرعت مداری استفاده کنید.
           </p>
           <div className="flex flex-wrap gap-2 pt-2">
             <span className="text-xs px-3 py-1 bg-primary/20 text-primary rounded-full">
-              Interactive 3D
+              سه‌بعدی تعاملی
             </span>
             <span className="text-xs px-3 py-1 bg-secondary/20 text-secondary rounded-full">
-              Real Data
+              داده‌های واقعی
             </span>
             <span className="text-xs px-3 py-1 bg-accent/20 text-accent rounded-full">
-              Educational
+              آموزشی
             </span>
           </div>
         </div>
@@ -129,7 +128,7 @@ const Index = () => {
       <div className="absolute bottom-6 left-6 z-30">
         <div className="glass-panel px-4 py-2 rounded-lg">
           <p className="text-xs text-muted-foreground">
-            Data: NASA, ESA | Built with Three.js
+            داده‌ها: NASA, ESA | ساخته شده با Three.js
           </p>
         </div>
       </div>
