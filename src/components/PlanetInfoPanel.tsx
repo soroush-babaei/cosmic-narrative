@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { X, Clock } from 'lucide-react';
+import { X, Clock, Film } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import GeologicalErasPanel from './GeologicalErasPanel';
+import CinematicErasPanel from './CinematicErasPanel';
 
 interface PlanetData {
   id: string;
@@ -28,6 +29,7 @@ interface PlanetInfoPanelProps {
 const PlanetInfoPanel = ({ planetId, onClose }: PlanetInfoPanelProps) => {
   const [planetData, setPlanetData] = useState<PlanetData | null>(null);
   const [showGeologicalEras, setShowGeologicalEras] = useState(false);
+  const [showCinematicEras, setShowCinematicEras] = useState(false);
 
   useEffect(() => {
     if (!planetId) return;
@@ -131,14 +133,23 @@ const PlanetInfoPanel = ({ planetId, onClose }: PlanetInfoPanelProps) => {
         </div>
 
         {planetId === 'earth' && (
-          <div className="mt-6">
+          <div className="mt-6 grid grid-cols-2 gap-4">
             <Button
               onClick={() => setShowGeologicalEras(true)}
-              className="w-full gap-2"
+              className="gap-2"
               size="lg"
+              variant="outline"
             >
               <Clock className="w-5 h-5" />
-              مشاهده دوره‌های زمین‌شناسی
+              دوره‌های زمین‌شناسی
+            </Button>
+            <Button
+              onClick={() => setShowCinematicEras(true)}
+              className="gap-2"
+              size="lg"
+            >
+              <Film className="w-5 h-5" />
+              نمایش سینمایی
             </Button>
           </div>
         )}
@@ -152,6 +163,10 @@ const PlanetInfoPanel = ({ planetId, onClose }: PlanetInfoPanelProps) => {
 
       {showGeologicalEras && (
         <GeologicalErasPanel onClose={() => setShowGeologicalEras(false)} />
+      )}
+
+      {showCinematicEras && (
+        <CinematicErasPanel onClose={() => setShowCinematicEras(false)} />
       )}
     </div>
   );
