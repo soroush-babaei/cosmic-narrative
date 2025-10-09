@@ -28,6 +28,17 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
   const speedRef = useRef(speed);
   const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
 
+  const planetNames: Record<string, string> = {
+    mercury: 'تیر',
+    venus: 'ناهید',
+    earth: 'زمین',
+    mars: 'بهرام',
+    jupiter: 'مشتری',
+    saturn: 'کیوان',
+    uranus: 'اورانوس',
+    neptune: 'نپتون'
+  };
+
   // Keep refs in sync with props
   useEffect(() => {
     isPlayingRef.current = isPlaying;
@@ -385,7 +396,7 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
     <div ref={containerRef} className="w-full h-full">
       {hoveredPlanet && (
         <div className="absolute top-4 left-1/2 -translate-x-1/2 glass-panel px-6 py-3 rounded-full">
-          <p className="text-sm font-medium capitalize">{hoveredPlanet}</p>
+          <p className="text-sm font-medium">{planetNames[hoveredPlanet] || hoveredPlanet}</p>
         </div>
       )}
     </div>
