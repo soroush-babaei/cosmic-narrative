@@ -42,10 +42,10 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
     planetsRef.current.forEach((planet, id) => {
       const material = planet.material as THREE.MeshStandardMaterial;
       if (id === hoveredPlanet) {
-        material.emissiveIntensity = 0.5;
+        material.emissiveIntensity = 0.6;
         planet.scale.set(1.1, 1.1, 1.1);
       } else {
-        material.emissiveIntensity = 0.15;
+        material.emissiveIntensity = 0.3;
         planet.scale.set(1, 1, 1);
       }
     });
@@ -170,9 +170,9 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
       const planetMaterial = new THREE.MeshStandardMaterial({
         map: texture,
         emissive: data.emissive,
-        emissiveIntensity: 0.15,
-        roughness: 0.8,
-        metalness: 0.1,
+        emissiveIntensity: 0.3,
+        roughness: 0.7,
+        metalness: 0.15,
       });
       
       const planet = new THREE.Mesh(planetGeometry, planetMaterial);
@@ -188,7 +188,7 @@ const CosmicCanvas = ({ onPlanetClick, animationPhase, isPlaying, speed }: Cosmi
       planet.position.z = Math.sin(planet.userData.angle) * data.distance;
       
       // Create invisible larger hitbox for easier clicking
-      const hitboxGeometry = new THREE.SphereGeometry(data.size * 3, 16, 16);
+      const hitboxGeometry = new THREE.SphereGeometry(data.size * 1.8, 16, 16);
       const hitboxMaterial = new THREE.MeshBasicMaterial({
         visible: false,
       });

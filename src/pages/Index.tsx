@@ -14,12 +14,8 @@ const Index = () => {
 
   // Show Big Bang animation on first load
   useEffect(() => {
-    const seen = localStorage.getItem('hasSeenBigBang');
-    if (!seen) {
-      setShowBigBang(true);
-    } else {
-      setHasSeenBigBang(true);
-    }
+    // Always show on first load
+    setShowBigBang(true);
   }, []);
   const handlePlanetClick = (planetId: string) => {
     setSelectedPlanet(planetId);
