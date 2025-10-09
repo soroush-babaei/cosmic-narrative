@@ -9,6 +9,12 @@ import paleozoicImg from '@/assets/era-paleozoic.jpg';
 import mesozoicImg from '@/assets/era-mesozoic.jpg';
 import cenozoicImg from '@/assets/era-cenozoic.jpg';
 
+
+interface LifeForm {
+  icon: string;
+  name: string;
+}
+
 interface Era {
   name: string;
   nameEn: string;
@@ -17,6 +23,10 @@ interface Era {
   characteristics: string;
   color: string;
   image: string;
+  keyEvents: string[];
+  lifeForms: LifeForm[];
+  climate: string;
+  transition: string;
 }
 
 const eras: Era[] = [
@@ -25,36 +35,106 @@ const eras: Era[] = [
     nameEn: 'Precambrian',
     period: '4.6 میلیارد - 541 میلیون سال پیش',
     duration: '~4 میلیارد سال',
-    characteristics: 'تشکیل زمین، ظهور اولین موجودات تک‌سلولی، تشکیل اقیانوس‌ها و جو اولیه',
+    characteristics: 'تشکیل زمین و ظهور اولین حیات',
+    climate: 'جو بدون اکسیژن، اقیانوس‌های داغ و اسیدی',
+    transition: 'افزایش اکسیژن در جو منجر به انفجار کامبرین شد',
     color: '#F48C06',
-    image: precambrianImg
+    image: precambrianImg,
+    keyEvents: [
+      '🌍 تشکیل زمین از گرد و غبار کیهانی',
+      '💧 تشکیل اقیانوس‌های اولیه',
+      '🦠 ظهور اولین باکتری‌ها',
+      '🌿 سیانوباکتری‌ها اکسیژن تولید می‌کنند',
+      '🔬 ظهور سلول‌های یوکاریوتی',
+      '🧬 موجودات چند سلولی اولیه'
+    ],
+    lifeForms: [
+      { icon: '🦠', name: 'باکتری‌های اولیه' },
+      { icon: '🌿', name: 'سیانوباکتری' },
+      { icon: '🔬', name: 'تک‌سلولی‌ها' },
+      { icon: '🧬', name: 'موجودات نرم‌تن' }
+    ]
   },
   {
     name: 'پالئوزوئیک',
     nameEn: 'Paleozoic',
     period: '541 - 252 میلیون سال پیش',
     duration: '~289 میلیون سال',
-    characteristics: 'انفجار کامبرین، ظهور ماهی‌ها، گیاهان و حشرات، تشکیل جنگل‌های اولیه، ظهور خزندگان',
+    characteristics: 'انفجار حیات در دریاها و خشکی',
+    climate: 'آب و هوای گرم و مرطوب، جنگل‌های انبوه',
+    transition: 'انقراض پرمین بزرگ‌ترین انقراض تاریخ زمین',
     color: '#0077B6',
-    image: paleozoicImg
+    image: paleozoicImg,
+    keyEvents: [
+      '💥 انفجار کامبرین - تنوع عظیم موجودات',
+      '🐟 ظهور اولین ماهی‌ها',
+      '🌱 گیاهان به خشکی می‌آیند',
+      '🦗 ظهور حشرات غول‌پیکر',
+      '🌳 جنگل‌های عظیم زغال‌سنگی',
+      '🦎 اولین خزندگان به خشکی می‌آیند',
+      '☠️ انقراض پرمین - 96% گونه‌ها نابود شدند'
+    ],
+    lifeForms: [
+      { icon: '🦐', name: 'تریلوبیت‌ها' },
+      { icon: '🐟', name: 'ماهی‌های زره‌دار' },
+      { icon: '🌿', name: 'سرخس‌های غول‌پیکر' },
+      { icon: '🦗', name: 'حشرات بزرگ' },
+      { icon: '🦎', name: 'دوزیستان و خزندگان' }
+    ]
   },
   {
     name: 'مزوزوئیک',
     nameEn: 'Mesozoic',
     period: '252 - 66 میلیون سال پیش',
     duration: '~186 میلیون سال',
-    characteristics: 'عصر دایناسورها، ظهور پرندگان و پستانداران، تشکیل گیاهان گلدار، انقراض دسته‌جمعی',
+    characteristics: 'عصر دایناسورها - سلطه خزندگان',
+    climate: 'گرم و خشک، بدون یخچال‌های قطبی',
+    transition: 'برخورد شهاب‌سنگ غول‌پیکر به انقراض دایناسورها انجامید',
     color: '#06A77D',
-    image: mesozoicImg
+    image: mesozoicImg,
+    keyEvents: [
+      '🦕 دایناسورها تسلط می‌یابند',
+      '🌺 ظهور گیاهان گلدار',
+      '🦋 حشرات گرده‌افشان',
+      '🦎 خزندگان دریایی و پرنده',
+      '🐭 ظهور پستانداران کوچک',
+      '🪶 اولین پرندگان واقعی',
+      '☄️ برخورد شهاب‌سنگ - انقراض دایناسورها'
+    ],
+    lifeForms: [
+      { icon: '🦕', name: 'دایناسورهای گیاهخوار' },
+      { icon: '🦖', name: 'دایناسورهای گوشتخوار' },
+      { icon: '🦅', name: 'پتروسورها (خزندگان پرنده)' },
+      { icon: '🐊', name: 'کروکودیل‌های غول‌پیکر' },
+      { icon: '🐭', name: 'پستانداران کوچک' }
+    ]
   },
   {
     name: 'سنوزوئیک',
     nameEn: 'Cenozoic',
     period: '66 میلیون سال پیش - اکنون',
     duration: '~66 میلیون سال',
-    characteristics: 'عصر پستانداران، ظهور انسان، تشکیل کوه‌های مدرن، عصر یخبندان‌ها',
+    characteristics: 'عصر پستانداران و ظهور انسان',
+    climate: 'سرد شدن تدریجی، عصرهای یخبندان',
+    transition: 'ظهور انسان و تغییرات محیطی توسط بشر',
     color: '#7209B7',
-    image: cenozoicImg
+    image: cenozoicImg,
+    keyEvents: [
+      '🦣 پستانداران بزرگ می‌شوند',
+      '🌳 گسترش جنگل‌ها و چمنزارها',
+      '🏔️ تشکیل رشته‌کوه‌های آلپ و هیمالیا',
+      '❄️ عصرهای یخبندان',
+      '🦴 ظهور نخستین‌های انسان‌نما',
+      '🧍 ظهور انسان خردمند (Homo sapiens)',
+      '🏛️ توسعه تمدن‌های بشری'
+    ],
+    lifeForms: [
+      { icon: '🦣', name: 'ماموت‌ها' },
+      { icon: '🦏', name: 'پستانداران بزرگ' },
+      { icon: '🐴', name: 'اسب‌های اولیه' },
+      { icon: '🐋', name: 'نهنگ‌ها' },
+      { icon: '🦍', name: 'نخستی‌ها و انسان' }
+    ]
   }
 ];
 
@@ -199,33 +279,64 @@ const CinematicErasPanel = ({ onClose }: CinematicErasPanelProps) => {
         </Canvas>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/90 via-black/70 to-transparent">
-        <div className="max-w-4xl mx-auto space-y-6">
+      <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black via-black/95 to-transparent max-h-[80vh] overflow-y-auto">
+        <div className="max-w-6xl mx-auto space-y-4">
           <div className="animate-fade-in">
-            <div className="flex items-center gap-4 mb-4">
+            <div className="flex items-center gap-4 mb-3">
               <div
-                className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg"
+                className="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg"
                 style={{ backgroundColor: currentEra.color }}
               >
                 {currentIndex + 1}
               </div>
-              <div>
-                <h2 className="text-4xl font-bold text-white mb-1">{currentEra.name}</h2>
-                <p className="text-lg text-white/80">{currentEra.nameEn}</p>
-              </div>
-              <div className="mr-auto text-right">
-                <p className="text-xl font-semibold text-white">{currentEra.duration}</p>
+              <div className="flex-1">
+                <h2 className="text-3xl font-bold text-white mb-1">{currentEra.name}</h2>
+                <p className="text-base text-white/70">{currentEra.nameEn} • {currentEra.period}</p>
               </div>
             </div>
 
-            <div className="space-y-3 text-white">
-              <div className="flex items-center gap-3">
-                <span className="text-sm font-semibold text-white/70">دوره:</span>
-                <span className="text-base">{currentEra.period}</span>
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+                <h3 className="text-white/70 text-sm font-semibold mb-2">🌡️ آب و هوا</h3>
+                <p className="text-white text-sm">{currentEra.climate}</p>
               </div>
-              <p className="text-lg leading-relaxed text-white/90">
-                {currentEra.characteristics}
-              </p>
+              <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+                <h3 className="text-white/70 text-sm font-semibold mb-2">🔄 انتقال به دوره بعد</h3>
+                <p className="text-white text-sm">{currentEra.transition}</p>
+              </div>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10 mb-4">
+              <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
+                <span className="text-lg">📋</span>
+                <span>رویدادهای کلیدی</span>
+              </h3>
+              <div className="grid md:grid-cols-2 gap-2">
+                {currentEra.keyEvents.map((event, idx) => (
+                  <div key={idx} className="flex items-start gap-2 text-white/90 text-sm">
+                    <span className="text-xs mt-0.5">•</span>
+                    <span>{event}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+              <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
+                <span className="text-lg">🌍</span>
+                <span>موجودات زنده</span>
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {currentEra.lifeForms.map((lifeForm, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5 text-white text-sm"
+                  >
+                    <span className="text-lg">{lifeForm.icon}</span>
+                    <span>{lifeForm.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
