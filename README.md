@@ -2,7 +2,6 @@
 
 An interactive educational visualizer that brings the story of our universe to life — from cosmic origins to the formation of our Solar System. Explore planets with real NASA scientific data in a stunning 3D environment.
 
-![Cosmic Evolution Simulator](https://lovable.dev/opengraph-image-p98pqg.png)
 
 ## ✨ Features
 
@@ -140,13 +139,6 @@ For better performance on lower-end devices:
 - Lower planet geometry detail (reduce segments)
 - Adjust renderer pixel ratio
 
-## 🚀 Building for Production
-
-```bash
-npm run build
-```
-
-The built files will be in the `dist/` directory, ready for deployment.
 
 ## 📱 Browser Support
 
@@ -166,23 +158,14 @@ This is an educational project. Feel free to:
 - Improve mobile experience
 - Extend with asteroid belt, Kuiper belt
 
-## 📄 License
-
-MIT License - feel free to use this for educational purposes.
-
 ## 🙏 Acknowledgments
 
 - NASA for planetary data
 - ESA for space science information
 - Three.js community for excellent 3D libraries
-- Built with [Lovable](https://lovable.dev)
 
 ## 🔗 Useful Links
 
 - [Three.js Documentation](https://threejs.org/docs/)
 - [NASA Planetary Data](https://nssdc.gsfc.nasa.gov/planetary/)
 - [Lovable Documentation](https://docs.lovable.dev/)
-
----
-
-**Explore the cosmos and discover the wonders of our Solar System! 🌠**
